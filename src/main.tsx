@@ -2,16 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
-
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Onboarding from "./pages/Onboarding"
+import { BrowserRouter } from "react-router-dom"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Onboarding />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
 )
