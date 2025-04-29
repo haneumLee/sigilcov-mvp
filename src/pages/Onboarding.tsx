@@ -2,8 +2,14 @@ import Button from "../components/Button"
 import logo from "../assets/sigilcov-icon.png"
 import React from "react"
 import { getWallets } from "../utils/indexedDB"
+import { useNavigate } from "react-router-dom"
+import { ROUTES } from "../routes"
+
+
 
 const Onboarding: React.FC = () => {
+    const navigate = useNavigate()
+
     const handleLogin = async () => {
         try{
             const wallets = await getWallets()
@@ -34,7 +40,7 @@ const Onboarding: React.FC = () => {
         }}>
         <img src={logo} alt="logo" style={{ width: "120px", marginBottom: "40px" }} />
         <Button text="로그인" onClick={(handleLogin)} />
-        <Button text="지갑 생성" onClick={() => console.log("지갑 생성")} />
+        <Button text="지갑 생성" onClick={() => navigate(ROUTES.CREATE_WALLET)} />
         <Button text="지갑 추가" onClick={() => console.log("지갑 추가")} />
         </div>
     )
