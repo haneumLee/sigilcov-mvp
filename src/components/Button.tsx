@@ -1,9 +1,10 @@
 interface ButtonProps {
     text: string
     onClick: () => void
+    style?: React.CSSProperties
   }
   
-  function Button({ text, onClick }: ButtonProps) {
+  function Button({ text, onClick, style }: ButtonProps) {
     return (
       <button
         style={{
@@ -13,7 +14,8 @@ interface ButtonProps {
           border: "none",
           borderRadius: "8px",
           cursor: "pointer",
-          width: "200px"
+          width: "200px",
+          ...style // 외부에서 전달한 스타일 병합
         }}
         onClick={onClick}
       >
