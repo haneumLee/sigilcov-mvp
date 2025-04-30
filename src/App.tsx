@@ -1,8 +1,19 @@
+// App.tsx
 import { Routes, Route } from "react-router-dom"
 import Onboarding from "./pages/Onboarding"
-import CreateWallet from "./pages/CreateWallet" // 만들 페이지
-
+import CreateWallet from "./pages/CreateWallet"
 import { ROUTES } from "./routes"
+import { Buffer } from "buffer"
+
+// 타입스크립트에게 window.Buffer의 존재를 알려줌
+declare global {
+  interface Window {
+    Buffer: typeof Buffer
+  }
+}
+
+// 실제 window 객체에 Buffer를 할당
+window.Buffer = Buffer
 
 function App() {
   return (
