@@ -31,7 +31,7 @@ export async function saveWallet(walletData: any) {
       tx.onerror = () => reject(tx.error);
       tx.onabort = () => reject(tx.error);
     });
-  }
+}
   
 
 // 지갑 모두 불러오기
@@ -58,4 +58,10 @@ export async function clearWallets() {
       tx.onerror = () => reject(tx.error);
       tx.onabort = () => reject(tx.error);
     });
-  }
+}
+
+// 
+export async function isWalletNameDuplicate(name: string): Promise<boolean> {
+    const wallets = await getWallets()
+    return wallets.some(wallet => wallet.name === name)
+}

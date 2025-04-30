@@ -2,12 +2,15 @@ import React, { useState } from "react"
 import { generateMnemonic } from "../utils/mnemonic"
 import logo from "../assets/sigilcov-icon.png"
 import Button from "../components/Button"
+import { isWalletNameDuplicate } from "../utils/indexedDB"
 
 const CreateWallet: React.FC = () => {
     const [mnemonic, setMnemonic] = useState<string>("")
     const [showNameModal, setShowNameModal] = useState(false)
     const [hasAgreed, setHasAgreed] = useState(false)
     const [copied, setCopied] = useState(false)
+    const [walletName, setWalletName] = useState("")
+    const [nameError, setNameError] = useState("")
 
     const handleGenerate = () => {
         const newMnemonic = generateMnemonic()
@@ -21,6 +24,24 @@ const CreateWallet: React.FC = () => {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
       }
+
+    const handleSaveName = async () => {
+        if (!walletName.trim()) {
+            setNameError("지갑 이름을 입력해주세요.")
+            return
+        }
+        
+        const isDuplicate = await isWalletNameDuplicate(walletName)
+        if (isDuplicate) {
+            setNameError("이미 존재하는 지갑 이름입니다.")
+            return
+        }
+        
+        setNameError("")
+        // TODO: 이름 저장하고 다음 단계(비밀번호 설정 등)로 이동
+        setShowNameModal(false)
+        console.log("지갑 이름 저장됨:", walletName)
+    }
 
     return (
         <div
@@ -106,14 +127,14 @@ const CreateWallet: React.FC = () => {
 
             <div style={{ marginTop: "30px" }}>
             <label>
+                <span style={{ marginLeft: "10px" }}>
+                    나는 시드 문구를 안전하게 저장했습니다
+                </span>
                 <input
                 type="checkbox"
                 checked={hasAgreed}
                 onChange={(e) => setHasAgreed(e.target.checked)}
                 />
-                <span style={{ marginLeft: "10px" }}>
-                    나는 시드 문구를 안전하게 저장했습니다
-                </span>
             </label>
 
             {hasAgreed && (
@@ -126,7 +147,43 @@ const CreateWallet: React.FC = () => {
             </div>
         </div>
 
-      {/* 지갑 이름 설정 모달은 이후에 구현 */}
+        {/* 지갑 이름 설정 모달은 이후에 구현 */}
+        {showNameModal && (
+            <div style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000
+            }}>
+                <div style={{
+                    backgroundColor: "#222",
+                    padding: "30px",
+                    borderRadius: "10px",
+                    width: "300px",
+                    color: "white"
+                }}>
+                    <h3 style={{ fontSize: "20px", marginBottom: "15px" }}>지갑 이름 설정</h3>
+                    <input
+                        type="text"
+                        placeholder="지갑 이름"
+                        value={walletName}
+                        onChange={(e) => setWalletName(e.target.value)}
+                        style={{ width: "100%", padding: "10px", fontSize: "16px" }}
+                    />
+                    {nameError && (
+                        <p style={{ color: "red", fontSize: "14px", marginTop: "10px" }}>{nameError}</p>
+                    )}
+                    <Button text="저장" onClick={handleSaveName} style={{ marginTop: "20px" }} />
+                </div>
+            </div>
+        )}
+
     </div>
   )
 }
