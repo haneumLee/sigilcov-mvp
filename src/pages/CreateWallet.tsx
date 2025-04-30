@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { generateMnemonic } from "../utils/mnemonic"
 import logo from "../assets/sigilcov-icon.png"
 import Button from "../components/Button"
-import { isWalletNameDuplicate } from "../utils/indexedDB"
+import { isWalletNameDuplicate, saveWallet } from "../utils/indexedDB"
 
 const CreateWallet: React.FC = () => {
     const [mnemonic, setMnemonic] = useState<string>("")
@@ -37,6 +37,15 @@ const CreateWallet: React.FC = () => {
             return
         }
         
+        const walletData = {
+            name: walletName,
+            mnemonic,
+            createdAt: new Date().toISOString()
+        }
+        
+        await saveWallet(walletData)
+        console.log("지갑 저장 완료:", walletData)
+
         setNameError("")
         // TODO: 이름 저장하고 다음 단계(비밀번호 설정 등)로 이동
         setShowNameModal(false)
