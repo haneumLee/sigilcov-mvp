@@ -72,8 +72,9 @@ const Onboarding: React.FC = () => {
 								cursor: "pointer"
 							}} onClick={() => {
 								console.log("선택된 지갑:", w)
+                                localStorage.setItem("selectedWalletId", w.id.toString())
 								setShowWalletModal(false)
-								// TODO: 선택된 지갑으로 로그인 처리
+								// TODO: 이후 홈 화면으로 이동
 							}}>
 								{w.name}
 							</div>
