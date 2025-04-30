@@ -7,11 +7,20 @@ const CreateWallet: React.FC = () => {
     const [mnemonic, setMnemonic] = useState<string>("")
     const [showNameModal, setShowNameModal] = useState(false)
     const [hasAgreed, setHasAgreed] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     const handleGenerate = () => {
         const newMnemonic = generateMnemonic()
         setMnemonic(newMnemonic)
     }
+
+    const handleCopy = () => {
+        if (!mnemonic) return
+        navigator.clipboard.writeText(mnemonic)
+        console.log("copied")
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }
 
     return (
         <div
@@ -48,13 +57,30 @@ const CreateWallet: React.FC = () => {
         {/* 우측 시드 문구 및 경고 영역 */}
         <div style={{ flex: 2, padding: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h2 style={{ color: "white", fontSize: "24px" }}>비밀 문구</h2>
-            <Button text="생성" onClick={() => setMnemonic(generateMnemonic())}/>
-            <Button text="복사" onClick={() => navigator.clipboard.writeText(mnemonic)} />
+                <h2 style={{ color: "white", fontSize: "24px" }}>비밀 문구</h2>
+                <Button text="생성" onClick={handleGenerate} />
+                {/* 복사 버튼과 복사 메시지를 묶음 */}
+                <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <Button text="복사" onClick={handleCopy} />
+                {copied && (
+                    <span style={{
+                    position: "absolute",
+                    top: "100%",
+                    marginTop: "6px",
+                    fontSize: "14px",
+                    color: "#ccc",
+                    backgroundColor: "#222",
+                    padding: "4px 8px",
+                    borderRadius: "4px"
+                    }}>
+                    클립보드에 복사되었습니다.
+                    </span>
+                )}
+                </div>
             </div>
 
             <p style={{ color: "red", marginTop: "10px" }}>
-            이 시드 문구는 생성 이후 다시 볼 수 없습니다.
+                이 시드 문구는 생성 이후 다시 볼 수 없습니다.
             </p>
 
             <div
@@ -86,7 +112,7 @@ const CreateWallet: React.FC = () => {
                 onChange={(e) => setHasAgreed(e.target.checked)}
                 />
                 <span style={{ marginLeft: "10px" }}>
-                나는 시드 문구를 안전하게 저장했습니다
+                    나는 시드 문구를 안전하게 저장했습니다
                 </span>
             </label>
 
