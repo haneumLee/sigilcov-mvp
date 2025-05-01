@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Onboarding from "./pages/Onboarding"
 import CreateWallet from "./pages/CreateWallet"
 import Home from "./pages/Home"
+import CoinDetail from "./pages/CoinDetail"
 import { ROUTES } from "./routes"
 import { Buffer } from "buffer"
 
@@ -22,6 +23,7 @@ function App() {
         <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
         <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
         <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.COIN_DETAIL_PATH} element={<CoinDetail />} />
       </Routes>
   )
 }

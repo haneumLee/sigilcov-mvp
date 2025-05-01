@@ -1,4 +1,6 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
+import { ROUTES } from "../routes"
 
 interface Coin {
 	id: number
@@ -20,6 +22,8 @@ const dummyCoins: Coin[] = [
 ]
 
 const CoinList: React.FC<CoinListProps> = ({ search, filter }) => {
+    const navigate = useNavigate()
+
     const filteredCoins = dummyCoins.filter((coin) => {
         const lowerSearch = search.toLowerCase()
         const matchSearch =
@@ -56,7 +60,9 @@ const CoinList: React.FC<CoinListProps> = ({ search, filter }) => {
                             marginBottom: "10px",
                             color: "white",
                             cursor: "pointer"
-                        }}>
+                            }}
+                            onClick={() => navigate(ROUTES.COIN_DETAIL(coin.symbol))}
+                        >
                             <div>
                                 <strong>{coin.name}</strong> / {coin.symbol}
                             </div>
