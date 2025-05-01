@@ -2,6 +2,7 @@
 import { Routes, Route } from "react-router-dom"
 import Onboarding from "./pages/Onboarding"
 import CreateWallet from "./pages/CreateWallet"
+import Home from "./pages/Home"
 import { ROUTES } from "./routes"
 import { Buffer } from "buffer"
 
@@ -20,6 +21,7 @@ function App() {
     <Routes>
       <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
       <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
+      <Route path={ROUTES.HOME} element={<Home />} />
     </Routes>
   )
 }

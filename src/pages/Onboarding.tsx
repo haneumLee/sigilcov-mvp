@@ -4,10 +4,13 @@ import logo from "../assets/sigilcov-icon.png"
 import { getWallets } from "../utils/indexedDB"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../routes"
+import WalletLoginModal from "../components/WalletLoginModal"
 
 const Onboarding: React.FC = () => {
 	const [wallets, setWallets] = useState<any[]>([])
 	const [showWalletModal, setShowWalletModal] = useState(false)
+	const [selectedWallet, setSelectedWallet] = useState<any | null>(null)
+	const [showLoginModal, setShowLoginModal] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -72,9 +75,10 @@ const Onboarding: React.FC = () => {
 								cursor: "pointer"
 							}} onClick={() => {
 								console.log("선택된 지갑:", w)
-                                localStorage.setItem("selectedWalletId", w.id.toString())
+								localStorage.setItem("selectedWalletId", w.id.toString())
+								setSelectedWallet(w)
 								setShowWalletModal(false)
-								// TODO: 이후 홈 화면으로 이동
+								setShowLoginModal(true)
 							}}>
 								{w.name}
 							</div>
@@ -82,6 +86,17 @@ const Onboarding: React.FC = () => {
 						<Button text="닫기" onClick={() => setShowWalletModal(false)} />
 					</div>
 				</div>
+			)}
+
+			{showLoginModal && selectedWallet && (
+				<WalletLoginModal
+					wallet={selectedWallet}
+					onClose={() => setShowLoginModal(false)}
+					onSuccess={() => {
+						console.log("로그인 성공")
+						navigate(ROUTES.HOME)
+					}}
+				/>
 			)}
 		</div>
 	)
