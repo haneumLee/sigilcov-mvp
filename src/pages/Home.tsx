@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import logo from "../assets/sigilcov-icon.png"
+import CoinList from "../components/CoinList"
 
 const Home: React.FC = () => {
     const [search, setSearch] = useState("")
@@ -24,13 +25,15 @@ const Home: React.FC = () => {
 			</div>
 
             {/* 검색 & 필터 */}
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "20px 0" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
                 <input
                     type="text"
                     placeholder="코인명 검색"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={{ width: "30%",
+                    style={{ display: "flex", 
+						width: "30%", 
+						minWidth: "300px",
 						padding: "10px",
 						borderRadius: "5px",
 						border: "1px solid #ccc",
@@ -46,7 +49,7 @@ const Home: React.FC = () => {
 
             {/* 코인 리스트 */}
             <div>
-                <p>코인 리스트 컴포넌트 출력 예정</p>
+				<CoinList search={search} filter={filter} />
             </div>
         </div>
     )
