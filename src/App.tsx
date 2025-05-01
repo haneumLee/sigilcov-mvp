@@ -4,6 +4,7 @@ import Onboarding from "./pages/Onboarding"
 import CreateWallet from "./pages/CreateWallet"
 import Home from "./pages/Home"
 import CoinDetail from "./pages/CoinDetail"
+import Deposit from "./pages/Deposit"
 import { ROUTES } from "./routes"
 import { Buffer } from "buffer"
 
@@ -24,6 +25,7 @@ function App() {
         <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.COIN_DETAIL_PATH} element={<CoinDetail />} />
+        <Route path={ROUTES.DEPOSIT_PATH} element={<Deposit />} />
       </Routes>
   )
 }
