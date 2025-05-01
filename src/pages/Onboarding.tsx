@@ -93,7 +93,6 @@ const Onboarding: React.FC = () => {
 					wallet={selectedWallet}
 					onClose={() => setShowLoginModal(false)}
 					onSuccess={() => {
-						console.log("로그인 성공")
 						navigate(ROUTES.HOME)
 					}}
 				/>

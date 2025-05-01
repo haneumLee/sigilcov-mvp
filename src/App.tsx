@@ -18,11 +18,11 @@ window.Buffer = Buffer
 
 function App() {
   return (
-    <Routes>
-      <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
-      <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
-      <Route path={ROUTES.HOME} element={<Home />} />
-    </Routes>
+      <Routes>
+        <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
+        <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+      </Routes>
   )
 }
 
