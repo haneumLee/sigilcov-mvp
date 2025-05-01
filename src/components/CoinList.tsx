@@ -20,19 +20,24 @@ const dummyCoins: Coin[] = [
 ]
 
 const CoinList: React.FC<CoinListProps> = ({ search, filter }) => {
-	const filteredCoins = dummyCoins.filter((coin) => {
-		const matchSearch = coin.name.includes(search) || coin.symbol.includes(search)
-		let matchFilter = true
+    const filteredCoins = dummyCoins.filter((coin) => {
+        const lowerSearch = search.toLowerCase()
+        const matchSearch =
+            coin.name.toLowerCase().includes(lowerSearch) ||
+            coin.symbol.toLowerCase().includes(lowerSearch)
+    
+        let matchFilter = true
+    
+        if (filter === "보유") {
+            matchFilter = coin.balance > 0
+        } else if (filter === "관심") {
+            matchFilter = false // 나중에 로직 추가
+        }
+    
+        return matchSearch && matchFilter
+    })
 
-		if (filter === "보유") {
-			matchFilter = coin.balance > 0
-		} else if (filter === "관심") {
-			// 관심 로직은 추후 구현 예정
-			matchFilter = false
-		}
 
-		return matchSearch && matchFilter
-	})
 
 	return (
 		<div style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}>
