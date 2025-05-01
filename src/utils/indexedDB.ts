@@ -32,6 +32,18 @@ export async function saveWallet(walletData: any) {
       tx.onabort = () => reject(tx.error);
     });
 }
+
+// 지갑 ID로 가져오기
+export async function getWalletById(id: number): Promise<any | null> {
+	const db = await openDB()
+	const tx = db.transaction(STORE_NAME, "readonly")
+	const store = tx.objectStore(STORE_NAME)
+	return new Promise((resolve, reject) => {
+		const request = store.get(id)
+		request.onsuccess = () => resolve(request.result)
+		request.onerror = () => reject(request.error)
+	})
+}
   
 
 // 지갑 모두 불러오기
