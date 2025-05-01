@@ -5,6 +5,7 @@ import CreateWallet from "./pages/CreateWallet"
 import Home from "./pages/Home"
 import CoinDetail from "./pages/CoinDetail"
 import Deposit from "./pages/Deposit"
+import Withdraw from "./pages/Withdraw"
 import { ROUTES } from "./routes"
 import { Buffer } from "buffer"
 
@@ -26,6 +27,7 @@ function App() {
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.COIN_DETAIL_PATH} element={<CoinDetail />} />
         <Route path={ROUTES.DEPOSIT_PATH} element={<Deposit />} />
+        <Route path={ROUTES.WITHDRAW_PATH} element={<Withdraw />} />
       </Routes>
   )
 }

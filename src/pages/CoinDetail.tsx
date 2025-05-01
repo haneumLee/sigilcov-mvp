@@ -40,7 +40,7 @@ const CoinDetail: React.FC = () => {
             {/* 입금/출금 버튼 */}
             <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginBottom: "30px" }}>
                 <button onClick={() => navigate(ROUTES.DEPOSIT(symbol!))} style={{ padding: "10px 30px", borderRadius: "5px", border: "none", cursor: "pointer" }}>입금</button>
-                <button style={{ padding: "10px 30px", borderRadius: "5px", border: "none", cursor: "pointer" }}>출금</button>
+                <button onClick={() => navigate(ROUTES.WITHDRAW(symbol!))} style={{ padding: "10px 30px", borderRadius: "5px", border: "none", cursor: "pointer" }}>출금</button>
             </div>
 
             {/* 거래내역 필터 + 더미 리스트 */}
