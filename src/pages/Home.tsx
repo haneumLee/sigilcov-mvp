@@ -46,6 +46,31 @@ const Home: React.FC = () => {
         })
     }, [])
 
+    useEffect(() => {
+        const stored = localStorage.getItem("customTokens")
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored)
+                if (Array.isArray(parsed)) {
+                    setCoins(parsed)
+                }
+            } catch (err) {
+                console.error("로컬스토리지 파싱 실패:", err)
+            }
+        } else {
+            // 최초 진입 시 Sol만 기본으로 넣기
+            setCoins([
+                {
+                    id: "solana", 
+                    name: "Solana",
+                    symbol: "SOL",
+                    image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+                    balance: 0,
+                }
+            ])
+        }
+    }, [])
+
     const handleAuthSuccess = () => {
         if (selectedWallet) {
             setWalletName(selectedWallet.name)
@@ -56,7 +81,10 @@ const Home: React.FC = () => {
 
     const handleAddCoin = async () => {
         const symbol = search.trim().toUpperCase()
-        if (!symbol) return
+        if (!symbol) {
+            alert("심볼을 입력하세요.")
+            return
+        }
 
         const tokenInfo = TOKEN_MAP[symbol.toUpperCase()]
         if (!tokenInfo) {
@@ -77,7 +105,11 @@ const Home: React.FC = () => {
                 alert("이미 추가된 토큰입니다.")
                 return
             }
-            setCoins(prev => [...prev, newCoin])
+            setCoins(prev => {
+                const updatedCoins = [...prev, newCoin]
+                localStorage.setItem("customTokens", JSON.stringify(updatedCoins))
+                return updatedCoins
+            })
             setSearch("")
         } catch (err) {
             console.error("토큰 정보 불러오기 실패:", err)
