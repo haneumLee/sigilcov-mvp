@@ -1,78 +1,62 @@
-import React from "react"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../routes"
 
 interface Coin {
-	id: number
-	name: string
-	symbol: string
-	balance: number
+    id: string
+    name: string
+    symbol: string
+    image: string
+    balance: number
 }
 
 interface CoinListProps {
-	search: string
-	filter: string
+    coins: Coin[]
+    filter: string
 }
 
-const dummyCoins: Coin[] = [
-	{ id: 1, name: "솔라나", symbol: "SOL", balance: 1.2345 },
-	{ id: 2, name: "이더리움", symbol: "ETH", balance: 0 },
-	{ id: 3, name: "비트코인", symbol: "BTC", balance: 0.56 },
-	{ id: 4, name: "도지코인", symbol: "DOGE", balance: 0 },
-]
-
-const CoinList: React.FC<CoinListProps> = ({ search, filter }) => {
+const CoinList: React.FC<CoinListProps> = ({ coins, filter }) => {
     const navigate = useNavigate()
 
-    const filteredCoins = dummyCoins.filter((coin) => {
-        const lowerSearch = search.toLowerCase()
-        const matchSearch =
-            coin.name.toLowerCase().includes(lowerSearch) ||
-            coin.symbol.toLowerCase().includes(lowerSearch)
-    
-        let matchFilter = true
-    
+    const filteredCoins = coins.filter((coin) => {
         if (filter === "보유") {
-            matchFilter = coin.balance > 0
-        } else if (filter === "관심") {
-            matchFilter = false // 나중에 로직 추가
+            return coin.balance > 0
         }
-    
-        return matchSearch && matchFilter
+        return true
     })
 
-
-
-	return (
-		<div style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}>
-            <div style={{ width: "50%", maxWidth: "500px" }}>
+    return (
+        <div style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "90%", maxWidth: "500px" }}>
                 {filteredCoins.length === 0 ? (
-                    <p>표시할 코인이 없습니다.</p>
+                    <p style={{ textAlign: "center" }}>표시할 코인이 없습니다.</p>
                 ) : (
                     filteredCoins.map((coin) => (
-                        <div key={coin.id} style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            background: "#a57abf",
-                            padding: "15px",
-                            borderRadius: "8px",
-                            marginBottom: "10px",
-                            color: "white",
-                            cursor: "pointer"
+                        <div
+                            key={coin.id}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                background: "#a57abf",
+                                padding: "15px",
+                                borderRadius: "8px",
+                                marginBottom: "10px",
+                                color: "white",
+                                cursor: "pointer",
                             }}
-                            onClick={() => navigate(ROUTES.COIN_DETAIL(coin.symbol))}
+                            onClick={() => navigate(ROUTES.COIN_DETAIL(coin.symbol.toUpperCase()))}
                         >
-                            <div>
-                                <strong>{coin.name}</strong> / {coin.symbol}
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src={coin.image} alt={coin.name} style={{ width: "30px", height: "30px" }} />
+                                <strong>{coin.name}</strong> / {coin.symbol.toUpperCase()}
                             </div>
                             <div>{coin.balance.toFixed(8)}</div>
                         </div>
                     ))
                 )}
             </div>
-		</div>
-	)
+        </div>
+    )
 }
 
 export default CoinList
