@@ -5,12 +5,14 @@ import { getWallets } from "../utils/indexedDB"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../routes"
 import WalletLoginModal from "../components/WalletLoginModal"
+import WalletListModal from "../components/WalletListModal"
+import WalletAuthModal from "../components/WalletAuthModal"
 
 const Onboarding: React.FC = () => {
 	const [wallets, setWallets] = useState<any[]>([])
-	const [showWalletModal, setShowWalletModal] = useState(false)
+	const [showWalletListModal, setShowWalletListModal] = useState(false)
+	const [showWalletAuthModal, setShowWalletAuthModal] = useState(false)
 	const [selectedWallet, setSelectedWallet] = useState<any | null>(null)
-	const [showLoginModal, setShowLoginModal] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -19,7 +21,7 @@ const Onboarding: React.FC = () => {
 			const wallets = await getWallets()
 			if (wallets.length > 0) {
 				setWallets(wallets)
-				setShowWalletModal(true)
+				setShowWalletListModal(true)
 			} else {
 				alert("등록된 지갑이 없습니다. 지갑을 생성해주세요.")
 			}
@@ -44,57 +46,36 @@ const Onboarding: React.FC = () => {
 			<Button text="지갑 생성" onClick={() => navigate(ROUTES.CREATE_WALLET)} />
 			<Button text="지갑 추가" onClick={() => console.log("지갑 추가")} />
 
-			{showWalletModal && (
-				<div style={{
-					position: "fixed",
-					top: 0,
-					left: 0,
-					width: "100%",
-					height: "100%",
-					backgroundColor: "rgba(0, 0, 0, 0.5)",
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					zIndex: 100
-				}}>
-					<div style={{
-						backgroundColor: "#222",
-						color: "#fff",
-						padding: "20px",
-						borderRadius: "12px",
-						width: "300px",
-						textAlign: "center"
-					}}>
-						<h3 style={{ marginBottom: "16px" }}>지갑 선택</h3>
-						{wallets.map((w) => (
-							<div key={w.id} style={{
-								margin: "10px 0",
-								padding: "10px",
-								backgroundColor: "#444",
-								borderRadius: "8px",
-								cursor: "pointer"
-							}} onClick={() => {
-								console.log("선택된 지갑:", w)
-								localStorage.setItem("selectedWalletId", w.id.toString())
-								setSelectedWallet(w)
-								setShowWalletModal(false)
-								setShowLoginModal(true)
-							}}>
-								{w.name}
-							</div>
-						))}
-						<Button text="닫기" onClick={() => setShowWalletModal(false)} />
-					</div>
-				</div>
+			{/* 지갑 목록 모달 */}
+			{showWalletListModal && (
+				<WalletListModal
+					wallets={wallets}
+					onSelect={(wallet) => {
+						setShowWalletListModal(false)
+						setSelectedWallet(wallet)
+						setShowWalletAuthModal(true)
+					}}
+					onClose={() => setShowWalletListModal(false)}
+					onLogout={() => {
+						// 온보딩에서는 로그아웃 기능 불필요하니까 비워두거나 주석으로 남김
+					}}
+				/>
 			)}
 
-			{showLoginModal && selectedWallet && (
-				<WalletLoginModal
+			{/* 지갑 인증 모달 */}
+			{showWalletAuthModal && selectedWallet && (
+				<WalletAuthModal
 					wallet={selectedWallet}
-					onClose={() => setShowLoginModal(false)}
 					onSuccess={() => {
+						console.log("로그인 성공:", selectedWallet)
+						if (selectedWallet) {
+							localStorage.setItem("selectedWalletId", selectedWallet.id.toString())
+						}
+						const id = localStorage.getItem("selectedWalletId")
+						console.log("navigate 직전 walletId:", id) 
 						navigate(ROUTES.HOME)
 					}}
+					onClose={() => setShowWalletAuthModal(false)}
 				/>
 			)}
 		</div>

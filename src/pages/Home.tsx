@@ -4,6 +4,7 @@ import CoinList from "../components/CoinList"
 import WalletListModal from "../components/WalletListModal"
 import WalletAuthModal from "../components/WalletAuthModal"
 import { getWalletById, getWallets } from "../utils/indexedDB"
+import { useNavigate } from "react-router-dom"
 
 const Home: React.FC = () => {
     const [search, setSearch] = useState("")
@@ -14,14 +15,23 @@ const Home: React.FC = () => {
     const [showWalletAuthModal, setShowWalletAuthModal] = useState(false)
     const [selectedWallet, setSelectedWallet] = useState<any | null>(null)
 
+	const navigate = useNavigate()
+
     useEffect(() => {
         const walletId = localStorage.getItem("selectedWalletId")
+		console.log("로컬스토리지에서 불러온 walletId:", walletId)
         if (walletId) {
             getWalletById(Number(walletId))
                 .then(wallet => {
+					console.log("getWalletById 결과:", wallet)
                     if (wallet) setWalletName(wallet.name)
                 })
-        }
+				.catch(err => {
+					console.error("지갑 불러오기 실패:", err) 
+				})
+		} else {
+			console.log("walletId가 없음")
+		}
     }, [])
 
     useEffect(() => {
@@ -80,6 +90,10 @@ const Home: React.FC = () => {
                         setShowWalletAuthModal(true)
                     }}
                     onClose={() => setShowWalletListModal(false)}
+					onLogout={() => {
+						localStorage.removeItem("selectedWalletId")
+						navigate("/")  // 필요하면 import { useNavigate } from "react-router-dom"
+					}}
                 />
             )}
 

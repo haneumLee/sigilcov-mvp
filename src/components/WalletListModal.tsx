@@ -6,9 +6,11 @@ interface WalletListModalProps {
 	wallets: any[]
 	onSelect: (wallet: any) => void
 	onClose: () => void
+    onLogout: () => void
 }
 
-const WalletListModal: React.FC<WalletListModalProps> = ({ wallets, onSelect, onClose }) => {
+const WalletListModal: React.FC<WalletListModalProps> = ({ wallets, onSelect, onClose, onLogout }) => {
+
 	return (
 		<div style={{
 			position: "fixed",
@@ -55,7 +57,10 @@ const WalletListModal: React.FC<WalletListModalProps> = ({ wallets, onSelect, on
 					))
 				)}
 
-				<Button text="닫기" onClick={onClose} />
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+                    <Button text="로그아웃" onClick={onLogout} style={{ flex: 1, maxWidth: "120px", padding: "8px 0" }} />
+                    <Button text="닫기" onClick={onClose} style={{ flex: 1, maxWidth: "120px", padding: "8px 0" }} />
+                </div>
 			</div>
 		</div>
 	)
