@@ -1,10 +1,35 @@
-function App() {
-    return (
-      <div className="text-center p-8 text-lg">
-        <h1 className="text-2xl font-bold">🦌 Sigilcov 시작됨</h1>
-        <p className="mt-4">Solana 기반 지갑 프로젝트</p>
-      </div>
-    )
+// App.tsx
+import { Routes, Route } from "react-router-dom"
+import Onboarding from "./pages/Onboarding"
+import CreateWallet from "./pages/CreateWallet"
+import Home from "./pages/Home"
+import CoinDetail from "./pages/CoinDetail"
+import Deposit from "./pages/Deposit"
+import Withdraw from "./pages/Withdraw"
+import { ROUTES } from "./routes"
+import { Buffer } from "buffer"
+
+// 타입스크립트에게 window.Buffer의 존재를 알려줌
+declare global {
+  interface Window {
+    Buffer: typeof Buffer
   }
-  
-  export default App
+}
+
+// 실제 window 객체에 Buffer를 할당
+window.Buffer = Buffer
+
+function App() {
+  return (
+      <Routes>
+        <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
+        <Route path={ROUTES.CREATE_WALLET} element={<CreateWallet />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.COIN_DETAIL_PATH} element={<CoinDetail />} />
+        <Route path={ROUTES.DEPOSIT_PATH} element={<Deposit />} />
+        <Route path={ROUTES.WITHDRAW_PATH} element={<Withdraw />} />
+      </Routes>
+  )
+}
+
+export default App
