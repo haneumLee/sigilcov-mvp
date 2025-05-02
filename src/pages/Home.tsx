@@ -7,6 +7,7 @@ import { getWalletById, getWallets } from "../utils/indexedDB"
 import { TOKEN_MAP } from "../utils/tokenMap"
 import axios from "axios"
 
+
 const Home: React.FC = () => {
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState("전체")
@@ -55,24 +56,26 @@ const Home: React.FC = () => {
 
     const handleAddCoin = async () => {
         const symbol = search.trim().toUpperCase()
-        if (!symbol || coins.find(c => c.symbol === symbol)) return
+        if (!symbol) return
 
-        const tokenInfo = TOKEN_MAP[symbol]
+        const tokenInfo = TOKEN_MAP[symbol.toUpperCase()]
         if (!tokenInfo) {
             alert("지원하지 않는 심볼입니다.")
             return
         }
 
         try {
-            const res = await axios.get(`https://public-api.solscan.io/token/meta?tokenAddress=${tokenInfo.mint}`)
-            const data = res.data
-
             const newCoin = {
-                id: tokenInfo.mint,
-                name: data.name,
+                id: tokenInfo.address,
+                name: tokenInfo.name,
                 symbol: symbol,
-                image: data.icon,
+                image: tokenInfo.logoURI,
                 balance: 0,
+            }
+            // 이미 존재하면 추가 안 함
+            if (coins.find((coin) => coin.symbol === symbol)) {
+                alert("이미 추가된 토큰입니다.")
+                return
             }
             setCoins(prev => [...prev, newCoin])
             setSearch("")
